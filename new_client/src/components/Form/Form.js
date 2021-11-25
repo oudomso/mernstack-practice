@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import useStyles from './style';
 import {TextField, Button, Typography, Paper} from '@material-ui/core';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import FileBase from 'react-file-base64';
-import {createPost} from '../../actions/posts';
+import {createPost, updatePost} from '../../actions/posts';
+import { useEffect } from 'react';
 
-const Form = () => {
+const Form = ({currentId, setCurrentId}) => {
     //Link style.js to Form
     const classes = useStyles();
 
+    //Fetch New Post
+    //If theres no new data return null
+    const post = useSelector((state) => currentId ? state.posts.find((p) => p._id===currentId): null);
 
     // Store JSON DATA as State variable
     const [postData, setPostData] = useState({
@@ -18,10 +22,20 @@ const Form = () => {
     //Uses dispatch 
     const dispatch = useDispatch();
     
+    useEffect(() => {
+        if(post) setPostData(post)
+    }, [post])
+
     const handlesubmit =(e) =>{
             e.preventDefault();
 
-            dispatch(createPost(postData));
+            if(currentId){
+                dispatch(updatePost(currentId, postData));
+            }
+            else{
+
+                dispatch(createPost(postData));
+            }
     }
     
     const clear =() =>{
