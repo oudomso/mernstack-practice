@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useStyles from './style';
 import {TextField, Button, Typography, Paper} from '@material-ui/core';
 import {useDispatch, useSelector} from 'react-redux';
 
 import FileBase from 'react-file-base64';
 import {createPost, updatePost} from '../../actions/posts';
-import { useEffect } from 'react';
+
 
 const Form = ({currentId, setCurrentId}) => {
     //Link style.js to Form
@@ -13,11 +13,11 @@ const Form = ({currentId, setCurrentId}) => {
 
     //Fetch New Post
     //If theres no new data return null
-    const post = useSelector((state) => currentId ? state.posts.find((p) => p._id===currentId): null);
+    const post = useSelector((state) => currentId ? state.posts.find((p) => p._id == currentId): null);
 
     // Store JSON DATA as State variable
     const [postData, setPostData] = useState({
-        creator:"", title: "", message:"", tags:"", selectedFile: ""});
+        creator:'', title: '', message:'', tags:'', selectedFile: ''});
     
     //Uses dispatch 
     const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const Form = ({currentId, setCurrentId}) => {
 
     const handlesubmit =(e) =>{
             e.preventDefault();
-
+        
             if(currentId){
                 dispatch(updatePost(currentId, postData));
             }
@@ -36,16 +36,19 @@ const Form = ({currentId, setCurrentId}) => {
 
                 dispatch(createPost(postData));
             }
+            clear();
     }
     
     const clear =() =>{
+        setCurrentId(null);
+        setPostData({creator:'', title: '', message:'', tags:'', selectedFile: ''});
 
     }
     
     return (
         <Paper className={classes.paper}>
             <form autoCompletre="off" noValidate className = {`${classes.root}`, `${classes.form}`} onSubmit={handlesubmit}>
-                <Typography variant="h6">​​​ ការផុស ​</Typography>
+                <Typography variant="h6">​​​ {currentId ? 'កែរ': 'កំពុង'}ផុស ​</Typography>
                 <TextField name="Creator" 
                     variant="outlined" 
                     label="ឈ្មោះ" 
@@ -89,7 +92,7 @@ const Form = ({currentId, setCurrentId}) => {
                 </div>
 
                 <Button className={classes.buttonSubmit} variant="container" color="Red" size="large" type="submit" fullWidth> submit </Button>
-                <Button onClick={clear} variant="container" color="Red" size="large" type="submit" fullWidth> Clear </Button>
+                <Button onClick={clear} variant="container" color="Red" size="large" type="clear" fullWidth> Clear </Button>
             </form>
         </Paper>
     );

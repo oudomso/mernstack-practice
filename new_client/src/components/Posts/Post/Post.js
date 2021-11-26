@@ -27,7 +27,7 @@ const POST = ({post, setCurrentId}) => {
             </div>
 
             <CardContent> 
-                <Typography className={classes.title} variant='h5' gutterBottom>{post.messages}</Typography>
+                <Typography className={classes.title} variant='h5' gutterBottom>{post.message}</Typography>
             </CardContent>
             <CardActions className={classes.cardActions}> 
                 <Button size="small" color="primary" onClick={()=>{}}>
